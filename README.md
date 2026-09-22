@@ -1,11 +1,11 @@
 # LangGraph Research Assistant
 
-> A multi-agent research workflow that creates analyst personas, runs parallel interview loops with web search, and synthesizes the results into a cited report using LangGraph, LangChain, OpenAI, and Tavily.
+> A multi-agent research workflow that creates analyst personas, runs parallel interview loops with web search, and synthesizes the results into a cited report using LangGraph, LangChain, Gemini, and Tavily.
 
 [![Python](https://img.shields.io/badge/Python-3.12+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![LangGraph](https://img.shields.io/badge/LangGraph-Orchestration-1C3C3C)](https://www.langchain.com/langgraph)
 [![LangChain](https://img.shields.io/badge/LangChain-LLM%20Workflows-1C3C3C)](https://www.langchain.com/)
-[![OpenAI](https://img.shields.io/badge/OpenAI-gpt--4o-412991?logo=openai&logoColor=white)](https://platform.openai.com/)
+[![Gemini](https://img.shields.io/badge/Google-Gemini_AI-4285F4?logo=google&logoColor=white)
 [![Tavily](https://img.shields.io/badge/Tavily-Web%20Search-0EA5E9)](https://www.tavily.com/)
 [![uv](https://img.shields.io/badge/uv-Package%20Manager-DE5FE9)](https://docs.astral.sh/uv/)
 
@@ -34,7 +34,7 @@ The project demonstrates several practical agent patterns:
 | `src/utils/states.py` | TypedDict and message-state definitions used by the graphs |
 | `src/utils/objects.py` | Pydantic models for analyst personas and structured outputs |
 | `src/utils/prompts.py` | Prompt templates for analyst creation, interviews, search, and report synthesis |
-| `src/utils/models.py` | OpenAI chat model initialization |
+| `src/utils/models.py` | Gemini chat model initialization |
 | `langgraph.json` | LangGraph CLI/Studio graph registration |
 
 ---
@@ -83,7 +83,7 @@ The full graph creates analyst personas, pauses for human feedback, runs intervi
 
 1. **The user provides a topic.** The graph receives a research topic and a maximum number of analysts.
 
-2. **Analyst personas are generated.** `create_analysts` uses the OpenAI model with structured output to create distinct expert perspectives.
+2. **Analyst personas are generated.** `create_analysts` uses the Gemini model with structured output to create distinct expert perspectives.
 
 3. **Human feedback is requested.** The graph interrupts before `human_feedback`, allowing the user to approve the analysts or request changes.
 
@@ -172,7 +172,7 @@ LangGraph_Assistant/
 |---|---|
 | Python 3.12+ | Required by `pyproject.toml` |
 | `uv` | Used for dependency installation and command execution |
-| OpenAI API key | Required for `ChatOpenAI` |
+| Gemini API key | Required for `ChatGoogleGenerativeAI` |
 | Tavily API key | Required for web search |
 
 Check your local versions:
@@ -208,7 +208,7 @@ This creates the virtual environment and installs the locked dependencies from `
 Create a `.env` file in the project root:
 
 ```env
-OPENAI_API_KEY=your_openai_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
 TAVILY_API_KEY=your_tavily_api_key_here
 ```
 
@@ -258,7 +258,7 @@ The full graph returns a `final_report` field containing the generated Markdown 
 
 | Variable | Required | Purpose |
 |---|---:|---|
-| `OPENAI_API_KEY` | Yes | Authenticates the OpenAI chat model used by LangChain |
+| `GEMINI_API_KEY` | Yes | Authenticates the Gemini chat model used by LangChain |
 | `TAVILY_API_KEY` | Yes | Authenticates Tavily web search |
 
 ---
@@ -283,7 +283,7 @@ The full graph returns a `final_report` field containing the generated Markdown 
 | Language | Python 3.12+ | Application runtime |
 | Graph orchestration | LangGraph | Stateful graph execution, interrupts, and fan-out |
 | LLM framework | LangChain | Message handling, structured output, and model integration |
-| LLM provider | OpenAI | Analyst generation, interview responses, and report writing |
+| LLM provider | Gemini | Analyst generation, interview responses, and report writing |
 | Web research | Tavily | Search API for retrieval-grounded answers |
 | Configuration | dotenv | Loads local environment variables from `.env` |
 | Package management | uv | Dependency resolution and command execution |
@@ -292,7 +292,7 @@ The full graph returns a `final_report` field containing the generated Markdown 
 
 ## Limitations
 
-- The project requires valid OpenAI and Tavily API keys.
+- The project requires valid Gemini and Tavily API keys.
 - Report quality depends on the specificity of the topic and the quality of Tavily search results.
 - Generated reports should be reviewed before being used for business, academic, legal, medical, or financial decisions.
 - The current `main.py` is a minimal placeholder; the primary workflow is exposed through LangGraph.
